@@ -5,27 +5,25 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Open Software License (OSL 3.0)
+ * This source file is subject to the Academic Free License version 3.0
  * that is bundled with this package in the file LICENSE.md.
  * It is also available through the world-wide-web at this URL:
- * https://opensource.org/licenses/OSL-3.0
+ * https://opensource.org/licenses/AFL-3.0
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@prestashop.com so we can send you a copy immediately.
  *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade PrestaShop to newer
- * versions in the future. If you wish to customize PrestaShop for your
- * needs please refer to https://devdocs.prestashop.com/ for more information.
- *
  * @author    PrestaShop SA and Contributors <contact@prestashop.com>
  * @copyright Since 2007 PrestaShop SA and Contributors
- * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
+
+use PrestaShop\Module\AutoUpgrade\Database\DbWrapper;
 
 /**
  * File copied from ps_update_tabs.php and modified for only adding modules related tabs
+ *
+ * @throws \PrestaShop\Module\AutoUpgrade\Exceptions\UpdateDatabaseException
  */
 function ps_1750_update_module_tabs()
 {
@@ -44,14 +42,14 @@ function ps_1750_update_module_tabs()
     include_once 'add_new_tab.php';
     foreach ($moduleTabsToBeAdded as $className => $tabDetails) {
         add_new_tab_17($className, $tabDetails['translations'], 0, false, $tabDetails['parent']);
-        Db::getInstance()->execute(
+        DbWrapper::execute(
             'UPDATE `' . _DB_PREFIX_ . 'tab` SET `active`= 1 WHERE `class_name` = "' . $className . '"'
         );
     }
 
     // STEP 2: Rename module tabs (Notifications as Alerts, Module selection as Module Catalog, Module Catalog as Module Selections)
     include_once 'rename_tab.php';
-    $adminModulesNotificationsTabId = Db::getInstance()->getValue(
+    $adminModulesNotificationsTabId = DbWrapper::getValue(
         'SELECT id_tab FROM ' . _DB_PREFIX_ . 'tab WHERE class_name = "AdminModulesNotifications"'
     );
     if (!empty($adminModulesNotificationsTabId)) {
@@ -68,7 +66,7 @@ function ps_1750_update_module_tabs()
         );
     }
 
-    $adminModulesCatalogTabId = Db::getInstance()->getValue(
+    $adminModulesCatalogTabId = DbWrapper::getValue(
         'SELECT id_tab FROM ' . _DB_PREFIX_ . 'tab WHERE class_name = "AdminModulesCatalog"'
     );
     if (!empty($adminModulesCatalogTabId)) {
@@ -85,7 +83,7 @@ function ps_1750_update_module_tabs()
         );
     }
 
-    $adminModulesManageTabId = Db::getInstance()->getValue(
+    $adminModulesManageTabId = DbWrapper::getValue(
         'SELECT id_tab FROM ' . _DB_PREFIX_ . 'tab WHERE class_name = "AdminModulesManage"'
     );
     if (!empty($adminModulesManageTabId)) {
@@ -102,7 +100,7 @@ function ps_1750_update_module_tabs()
         );
     }
 
-    $adminModulesAddonsSelectionsTabId = Db::getInstance()->getValue(
+    $adminModulesAddonsSelectionsTabId = DbWrapper::getValue(
         'SELECT id_tab FROM ' . _DB_PREFIX_ . 'tab WHERE class_name = "AdminAddonsCatalog"'
     );
     if (!empty($adminModulesAddonsSelectionsTabId)) {
@@ -121,11 +119,11 @@ function ps_1750_update_module_tabs()
 
     // STEP 3: Move the 2 module catalog controllers in the parent one
     // Get The ID of the parent
-    $adminParentModuleCatalogTabId = Db::getInstance()->getValue(
+    $adminParentModuleCatalogTabId = DbWrapper::getValue(
         'SELECT id_tab FROM ' . _DB_PREFIX_ . 'tab WHERE class_name = "AdminParentModulesCatalog"'
     );
     foreach (['AdminModulesCatalog', 'AdminAddonsCatalog'] as $key => $className) {
-        Db::getInstance()->execute(
+        DbWrapper::execute(
             'UPDATE `' . _DB_PREFIX_ . 'tab` SET `id_parent`= ' . (int) $adminParentModuleCatalogTabId . ', position = ' . $key . ' WHERE `class_name` = "' . $className . '"'
         );
     }

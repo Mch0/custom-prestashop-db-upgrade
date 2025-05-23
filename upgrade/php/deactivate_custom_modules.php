@@ -5,27 +5,28 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Open Software License (OSL 3.0)
+ * This source file is subject to the Academic Free License version 3.0
  * that is bundled with this package in the file LICENSE.md.
  * It is also available through the world-wide-web at this URL:
- * https://opensource.org/licenses/OSL-3.0
+ * https://opensource.org/licenses/AFL-3.0
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@prestashop.com so we can send you a copy immediately.
  *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade PrestaShop to newer
- * versions in the future. If you wish to customize PrestaShop for your
- * needs please refer to https://devdocs.prestashop.com/ for more information.
- *
  * @author    PrestaShop SA and Contributors <contact@prestashop.com>
  * @copyright Since 2007 PrestaShop SA and Contributors
- * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
+ */
+
+use PrestaShop\Module\AutoUpgrade\Database\DbWrapper;
+
+/**
+ * @return bool
+ *
+ * @throws \PrestaShop\Module\AutoUpgrade\Exceptions\UpdateDatabaseException
  */
 function deactivate_custom_modules(): bool
 {
-    $db = Db::getInstance();
     $modules = scandir(_PS_MODULE_DIR_, SCANDIR_SORT_NONE);
     foreach ($modules as $name) {
         if (!in_array($name, ['.', '..', 'index.php', '.htaccess']) && @is_dir(_PS_MODULE_DIR_ . $name . DIRECTORY_SEPARATOR) && @file_exists(_PS_MODULE_DIR_ . $name . DIRECTORY_SEPARATOR . $name . '.php')) {
@@ -61,7 +62,7 @@ function deactivate_custom_modules(): bool
     }
     $arrNonNative = [];
     if ($arrNativeModules) {
-        $arrNonNative = $db->executeS('
+        $arrNonNative = DbWrapper::executeS('
     		SELECT *
     		FROM `' . _DB_PREFIX_ . 'module` m
     		WHERE name NOT IN (' . implode(',', $arrNativeModules) . ') ');
@@ -82,12 +83,12 @@ function deactivate_custom_modules(): bool
         $uninstallMe[$k] = '"' . pSQL($v) . '"';
     }
 
-    $return = Db::getInstance()->execute('
+    $return = DbWrapper::execute('
 	UPDATE `' . _DB_PREFIX_ . 'module` SET `active` = 0 WHERE `name` IN (' . implode(',', $uninstallMe) . ')');
 
-    if (count(Db::getInstance()->executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'module_shop\'')) > 0) {
+    if (count(DbWrapper::executeS('SHOW TABLES LIKE \'' . _DB_PREFIX_ . 'module_shop\'')) > 0) {
         foreach ($uninstallMe as $k => $uninstall) {
-            $return &= Db::getInstance()->execute('DELETE FROM `' . _DB_PREFIX_ . 'module_shop` WHERE `id_module` = ' . (int) $k);
+            $return &= DbWrapper::execute('DELETE FROM `' . _DB_PREFIX_ . 'module_shop` WHERE `id_module` = ' . (int) $k);
         }
     }
 
@@ -96,16 +97,18 @@ function deactivate_custom_modules(): bool
 
 /**
  * @param mixed $moduleRepository
+ *
+ * @throws \PrestaShop\Module\AutoUpgrade\Exceptions\UpdateDatabaseException
  */
 function deactivate_custom_modules80($moduleRepository): bool
 {
     $nonNativeModulesList = $moduleRepository->getNonNativeModules();
 
-    $return = Db::getInstance()->execute(
+    $return = DbWrapper::execute(
         'UPDATE `' . _DB_PREFIX_ . 'module` SET `active` = 0 WHERE `name` IN (' . implode(',', array_map('add_quotes', $nonNativeModulesList)) . ')'
     );
 
-    $nonNativeModules = \Db::getInstance()->executeS('
+    $nonNativeModules = DbWrapper::executeS('
         SELECT *
         FROM `' . _DB_PREFIX_ . 'module` m
         WHERE name IN (' . implode(',', array_map('add_quotes', $nonNativeModulesList)) . ') ');
@@ -121,7 +124,7 @@ function deactivate_custom_modules80($moduleRepository): bool
 
     $sql = 'DELETE FROM `' . _DB_PREFIX_ . 'module_shop` WHERE `id_module` IN (' . implode(',', array_map('add_quotes', $toBeUninstalled)) . ') ';
 
-    return $return && Db::getInstance()->execute($sql);
+    return $return && DbWrapper::execute($sql);
 }
 
 function add_quotes(string $str): string

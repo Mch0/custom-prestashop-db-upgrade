@@ -133,33 +133,65 @@ INSERT INTO `PREFIX_hook` (`id_hook`, `name`, `title`, `description`, `position`
   (NULL,'actionBeforeCreateZoneFormHandler','Modify zone identifiable object data before creating it','This hook allows to modify zone identifiable object forms data before it was created','1'),
   (NULL,'actionAfterCreateOrderStateFormHandler','Modify order state identifiable object data after creating it','This hook allows to modify order state identifiable object forms data after it was created','1'),
   (NULL,'actionAfterCreateOrderReturnStateFormHandler','Modify order return state identifiable object data after creating it','This hook allows to modify order return state identifiable object forms data after it was created','1'),
-  (NULL,'actionAfterCreateZoneFormHandler','Modify zone identifiable object data after creating it','This hook allows to modify zone identifiable object forms data after it was created','1')
+  (NULL,'actionAfterCreateZoneFormHandler','Modify zone identifiable object data after creating it','This hook allows to modify zone identifiable object forms data after it was created','1'),
+  (NULL,'actionAdminAdministrationControllerPostProcessBefore','On post-process in Admin Configure Advanced Parameters Administration Controller','This hook is called on Admin Configure Advanced Parameters Administration post-process before processing any form','1'),
+  (NULL,'actionAdminAdministrationControllerPostProcessGeneralBefore','On post-process in Admin Configure Advanced Parameters Administration Controller','This hook is called on Admin Configure Advanced Parameters Administration post-process before processing the General form','1'),
+  (NULL,'actionAdminAdministrationControllerPostProcessNotificationsBefore','On post-process in Admin Configure Advanced Parameters Administration Controller','This hook is called on Admin Configure Advanced Parameters Administration post-process before processing the Notifications form','1'),
+  (NULL,'actionAdminAdministrationControllerPostProcessUploadQuotaBefore','On post-process in Admin Configure Advanced Parameters Administration Controller','This hook is called on Admin Configure Advanced Parameters Administration post-process before processing the Upload Quota form','1'),
+  (NULL,'actionAdminAdminShopParametersMetaControllerPostProcessBefore','On post-process in Admin Configure Shop Parameters Meta Controller','This hook is called on Admin Configure Shop Parameters Meta post-process before processing any form','1'),
+  (NULL,'actionAdminAdvancedParametersPerformanceControllerPostProcessBefore','On post-process in Admin Configure Advanced Parameters Performance Controller','This hook is called on Admin Configure Advanced Parameters Performance post-process before processing any form','1'),
+  (NULL,'actionAdminAdvancedParametersPerformanceControllerPostProcessCachingBefore','On post-process in Admin Configure Advanced Parameters Performance Controller','This hook is called on Admin Configure Advanced Parameters Performance post-process before processing the Caching form','1'),
+  (NULL,'actionAdminAdvancedParametersPerformanceControllerPostProcessCombineCompressCacheBefore','On post-process in Admin Configure Advanced Parameters Performance Controller','This hook is called on Admin Configure Advanced Parameters Performance post-process before processing the Combine Compress Cache form','1'),
+  (NULL,'actionAdminAdvancedParametersPerformanceControllerPostProcessDebugModeBefore','On post-process in Admin Configure Advanced Parameters Performance Controller','This hook is called on Admin Configure Advanced Parameters Performance post-process before processing the Debug Mode form','1'),
+  (NULL,'actionAdminAdvancedParametersPerformanceControllerPostProcessMediaServersBefore','On post-process in Admin Configure Advanced Parameters Performance Controller','This hook is called on Admin Configure Advanced Parameters Performance post-process before processing the Media Servers form','1'),
+  (NULL,'actionAdminAdvancedParametersPerformanceControllerPostProcessOptionalFeaturesBefore','On post-process in Admin Configure Advanced Parameters Performance Controller','This hook is called on Admin Configure Advanced Parameters Performance post-process before processing the Optional Features form','1'),
+  (NULL,'actionAdminAdvancedParametersPerformanceControllerPostProcessSmartyBefore','On post-process in Admin Configure Advanced Parameters Performance Controller','This hook is called on Admin Configure Advanced Parameters Performance post-process before processing the Smarty form','1'),
+  (NULL,'actionAdminInternationalGeolocationControllerPostProcessBefore','On post-process in Admin Improve International Geolocation Controller','This hook is called on Admin Improve International Geolocation post-process before processing any form','1'),
+  (NULL,'actionAdminInternationalGeolocationControllerPostProcessByIpAddressBefore','On post-process in Admin Improve International Geolocation Controller','This hook is called on Admin Improve International Geolocation post-process before processing the By Ip Address form','1'),
+  (NULL,'actionAdminInternationalGeolocationControllerPostProcessOptionsBefore','On post-process in Admin Improve International Geolocation Controller','This hook is called on Admin Improve International Geolocation post-process before processing the Options form','1'),
+  (NULL,'actionAdminInternationalGeolocationControllerPostProcessWhitelistBefore','On post-process in Admin Improve International Geolocation Controller','This hook is called on Admin Improve International Geolocation post-process before processing the Whitelist form','1'),
+  (NULL,'actionAdminInternationalLocalizationControllerPostProcessAdvancedBefore','On post-process in Admin Improve International Localization Controller','This hook is called on Admin Improve International Localization post-process before processing the Advanced form','1'),
+  (NULL,'actionAdminInternationalLocalizationControllerPostProcessBefore','On post-process in Admin Improve International Localization Controller','This hook is called on Admin Improve International Localization post-process before processing any form','1'),
+  (NULL,'actionAdminInternationalLocalizationControllerPostProcessConfigurationBefore','On post-process in Admin Improve International Localization Controller','This hook is called on Admin Improve International Localization post-process before processing the Configuration form','1'),
+  (NULL,'actionAdminInternationalLocalizationControllerPostProcessLocalUnitsBefore','On post-process in Admin Improve International Localization Controller','This hook is called on Admin Improve International Localization post-process before processing the Local Units form','1'),
+  (NULL,'actionAdminShippingPreferencesControllerPostProcessBefore','On post-process in Admin Improve Shipping Preferences Controller','This hook is called on Admin Improve Shipping Preferences post-process before processing any form','1'),
+  (NULL,'actionAdminShippingPreferencesControllerPostProcessCarrierOptionsBefore','On post-process in Admin Improve Shipping Preferences Controller','This hook is called on Admin Improve Shipping Preferences post-process before processing the Carrier Options form','1'),
+  (NULL,'actionAdminShippingPreferencesControllerPostProcessHandlingBefore','On post-process in Admin Improve Shipping Preferences Controller','This hook is called on Admin Improve Shipping Preferences post-process before processing the Handling form','1'),
+  (NULL,'actionAdminShopParametersMetaControllerPostProcessSeoOptionsBefore','On post-process in Admin Configure Shop Parameters Meta Controller','This hook is called on Admin Configure Shop Parameters Meta post-process before processing the Seo Options form','1'),
+  (NULL,'actionAdminShopParametersMetaControllerPostProcessSetUpUrlsBefore','On post-process in Admin Configure Shop Parameters Meta Controller','This hook is called on Admin Configure Shop Parameters Meta post-process before processing the SetUp Urls form','1'),
+  (NULL,'actionAdminShopParametersMetaControllerPostProcessShopUrlsBefore','On post-process in Admin Configure Shop Parameters Meta Controller','This hook is called on Admin Configure Shop Parameters Meta post-process before processing the Shop Urls form','1'),
+  (NULL,'actionAdminShopParametersMetaControllerPostProcessUrlSchemaBefore','On post-process in Admin Configure Shop Parameters Meta Controller','This hook is called on Admin Configure Shop Parameters Meta post-process before processing the Url Schema form','1'),
+  (NULL,'actionAdminShopParametersOrderPreferencesControllerPostProcessBefore','On post-process in Admin Configure Shop Parameters Order Preferences Controller','This hook is called on Admin Configure Shop Parameters Order Preferences post-process before processing any form','1'),
+  (NULL,'actionAdminShopParametersOrderPreferencesControllerPostProcessGeneralBefore','On post-process in Admin Configure Shop Parameters Order Preferences Controller','This hook is called on Admin Configure Shop Parameters Order Preferences post-process before processing the General form','1'),
+  (NULL,'actionAdminShopParametersOrderPreferencesControllerPostProcessGiftOptionsBefore','On post-process in Admin Configure Shop Parameters Order Preferences Controller','This hook is called on Admin Configure Shop Parameters Order Preferences post-process before processing the Gift Options form','1'),
+  (NULL,'displayAfterTitleTag','After title tag','Use this hook to add content after title tag','1')
 ON DUPLICATE KEY UPDATE `title` = VALUES(`title`), `description` = VALUES(`description`);
 
-ALTER TABLE `PREFIX_employee` ADD `has_enabled_gravatar` TINYINT UNSIGNED DEFAULT 0 NOT NULL;
+/* PHP:add_column('employee', 'has_enabled_gravatar', 'TINYINT UNSIGNED DEFAULT 0 NOT NULL'); */;
 
-INSERT INTO `PREFIX_configuration` (`name`, `value`, `date_add`, `date_upd`) VALUES
-    ('PS_COOKIE_SAMESITE', 'Lax', NOW(), NOW()),
-    ('PS_SHOW_LABEL_OOS_LISTING_PAGES', '1', NOW(), NOW()),
-    ('ADDONS_API_MODULE_CHANNEL', 'stable', NOW(), NOW())
-;
+/* PHP:add_configuration_if_not_exists('PS_COOKIE_SAMESITE', 'Lax'); */;
+/* PHP:add_configuration_if_not_exists('PS_SHOW_LABEL_OOS_LISTING_PAGES', '1'); */;
+/* PHP:add_configuration_if_not_exists('ADDONS_API_MODULE_CHANNEL', 'stable'); */;
 
-ALTER TABLE `PREFIX_hook` ADD `active` TINYINT(1) UNSIGNED DEFAULT 1 NOT NULL AFTER `description`;
+/* PHP:add_column('hook', 'active', 'TINYINT(1) UNSIGNED DEFAULT 1 NOT NULL AFTER `description`'); */;
 
-ALTER TABLE `PREFIX_orders` ADD COLUMN `note` TEXT AFTER `date_upd`;
+/* PHP:add_column('orders', 'note', 'TEXT AFTER `date_upd`'); */;
 
 ALTER TABLE `PREFIX_currency` CHANGE `numeric_iso_code` `numeric_iso_code` varchar(3) NULL DEFAULT NULL;
 
 UPDATE `PREFIX_configuration` SET `value` = '4' WHERE `name` = 'PS_LOGS_BY_EMAIL' AND `value` = '5';
-ALTER TABLE `PREFIX_log`
-  ADD `id_shop` INT(10) unsigned DEFAULT NULL after `object_id`,
-  ADD `id_shop_group` INT(10) unsigned DEFAULT NULL after `id_shop`,
-  ADD `id_lang` INT(10) unsigned DEFAULT NULL after `id_shop_group`,
-  ADD `in_all_shops` TINYINT(1) unsigned NOT NULL DEFAULT '0'
-;
+UPDATE `PREFIX_configuration` SET `value` = 'https://www.prestashop.com' WHERE `name` = "BLOCKADVERT_LINK" AND `value` = 'http://www.prestashop.com';
+UPDATE `PREFIX_configuration` SET `value` = 'https://www.facebook.com/prestashop' WHERE `name` = "BLOCKSOCIAL_FACEBOOK" AND `value` = 'http://www.facebook.com/prestashop';
+UPDATE `PREFIX_configuration` SET `value` = 'https://www.prestashop.com/blog/feed/' WHERE `name` = "BLOCKSOCIAL_RSS" AND `value` = 'http://www.prestashop.com/blog/en/feed/';
+UPDATE `PREFIX_configuration` SET `value` = 'https://www.twitter.com/prestashop' WHERE `name` = "BLOCKSOCIAL_TWITTER" AND `value` = 'http://www.twitter.com/prestashop';
 
-ALTER TABLE `PREFIX_tab` ADD `wording` VARCHAR(255) DEFAULT NULL AFTER `icon`;
-ALTER TABLE `PREFIX_tab` ADD `wording_domain` VARCHAR(255) DEFAULT NULL AFTER `wording`;
+/* PHP:add_column('log', 'id_shop', 'INT(10) unsigned DEFAULT NULL after `object_id`'); */;
+/* PHP:add_column('log', 'id_shop_group', 'INT(10) unsigned DEFAULT NULL after `id_shop`'); */;
+/* PHP:add_column('log', 'id_lang', 'INT(10) unsigned DEFAULT NULL after `id_shop_group`'); */;
+/* PHP:add_column('log', 'in_all_shops', 'TINYINT(1) unsigned NOT NULL DEFAULT \'0\''); */;
+
+/* PHP:add_column('tab', 'wording', ' VARCHAR(255) DEFAULT NULL AFTER `icon`'); */;
+/* PHP:add_column('tab', 'wording_domain', 'VARCHAR(255) DEFAULT NULL AFTER `wording`'); */;
 
 UPDATE `PREFIX_product` SET `location` = '' WHERE `location` IS NULL;
 ALTER TABLE `PREFIX_product` MODIFY COLUMN `location` VARCHAR(255) NOT NULL DEFAULT '';
@@ -171,9 +203,7 @@ ALTER TABLE `PREFIX_product` MODIFY COLUMN `redirect_type` ENUM(
     '404', '301-product', '302-product', '301-category', '302-category'
 ) NOT NULL DEFAULT '404';
 
-ALTER TABLE  `PREFIX_product` ADD `product_type` ENUM(
-    'standard', 'pack', 'virtual', 'combinations', ''
-) NOT NULL DEFAULT '';
+/* PHP:add_column('product', 'product_type', 'ENUM(\'standard\', \'pack\', \'virtual\', \'combinations\', \'\') NOT NULL DEFAULT \'\''); */;
 
 /* First set all products to standard type, then update them based on cached columns that identify the type */
 UPDATE `PREFIX_product` SET `product_type` = "standard";
@@ -208,5 +238,5 @@ DROP INDEX full_shop_url_ssl ON `PREFIX_shop_url`;
 ALTER TABLE `PREFIX_shop_url` CHANGE id_shop_url id_shop_url INT AUTO_INCREMENT NOT NULL;
 ALTER TABLE `PREFIX_shop_url` CHANGE id_shop id_shop INT NOT NULL;
 CREATE INDEX IDX_279F19DA274A50A0 ON `PREFIX_shop_url` (id_shop);
-ALTER TABLE `PREFIX_shop` ADD color VARCHAR(50) NOT NULL;
-ALTER TABLE `PREFIX_shop_group` ADD color VARCHAR(50) NOT NULL;
+/* PHP:add_column('shop', 'color', 'VARCHAR(50) NOT NULL'); */;
+/* PHP:add_column('shop_group', 'color', 'VARCHAR(50) NOT NULL'); */;

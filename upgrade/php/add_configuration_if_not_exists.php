@@ -18,11 +18,23 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
+use PrestaShop\Module\AutoUpgrade\Database\DbWrapper;
+
 /**
- * Init new configuration values
+ * @return void
+ *
+ * @throws \PrestaShop\Module\AutoUpgrade\Exceptions\UpdateDatabaseException
  */
-function ps_1760_update_configuration()
+function add_configuration_if_not_exists($name, $value)
 {
-    Configuration::updateValue('PS_MAIL_THEME', 'modern');
-    Configuration::updateValue('PS_CATALOG_MODE_WITH_PRICES', 0);
+    // Check if this record already exists
+    $entry_exists = DbWrapper::executeS('SELECT * FROM `' . _DB_PREFIX_ . "configuration` WHERE name = '" . $name . "'");
+
+    // If no rows were found, insert a new entry
+    if (empty($entry_exists)) {
+        DbWrapper::execute(
+            'INSERT INTO `' . _DB_PREFIX_ . 'configuration` (`name`, `value`, `date_add`, `date_upd`)
+            VALUES (\'' . pSQL($name) . '\', \'' . pSQL($value) . '\', NOW(), NOW())'
+        );
+    }
 }

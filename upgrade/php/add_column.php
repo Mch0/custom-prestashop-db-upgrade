@@ -18,11 +18,22 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
+use PrestaShop\Module\AutoUpgrade\Database\DbWrapper;
+
 /**
- * Init new configuration values
+ * @return void
+ *
+ * @throws \PrestaShop\Module\AutoUpgrade\Exceptions\UpdateDatabaseException
  */
-function ps_1760_update_configuration()
+function add_column($table, $column, $parameters)
 {
-    Configuration::updateValue('PS_MAIL_THEME', 'modern');
-    Configuration::updateValue('PS_CATALOG_MODE_WITH_PRICES', 0);
+    $column_exists = DbWrapper::executeS('SHOW COLUMNS FROM `' . _DB_PREFIX_ . $table . "` WHERE Field = '" . $column . "'");
+
+    if (!empty($column_exists)) {
+        // If it already exists, we will modify the structure
+        DbWrapper::execute('ALTER TABLE `' . _DB_PREFIX_ . $table . '` CHANGE `' . $column . '` `' . $column . '` ' . $parameters);
+    } else {
+        // Otherwise, we add it
+        DbWrapper::execute('ALTER TABLE `' . _DB_PREFIX_ . $table . '` ADD `' . $column . '` ' . $parameters);
+    }
 }

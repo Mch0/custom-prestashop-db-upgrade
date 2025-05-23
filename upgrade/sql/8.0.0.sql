@@ -22,14 +22,12 @@ DELETE FROM `PREFIX_access`
 DELETE FROM `PREFIX_configuration`
   WHERE `name` IN ('PS_REFERRERS_CACHE_LIKE', 'PS_REFERRERS_CACHE_DATE');
 
-INSERT INTO `PREFIX_configuration` (`name`, `value`, `date_add`, `date_upd`) VALUES
-    ('PS_MAIL_DKIM_ENABLE', '0', NOW(), NOW()),
-    ('PS_MAIL_DKIM_DOMAIN', '', NOW(), NOW()),
-    ('PS_MAIL_DKIM_SELECTOR', '', NOW(), NOW()),
-    ('PS_MAIL_DKIM_KEY', '', NOW(), NOW()),
-    ('PS_WEBP_QUALITY', '80', NOW(), NOW()),
-    ('PS_SECURITY_TOKEN', '1', NOW(), NOW())
-;
+/* PHP:add_configuration_if_not_exists('PS_MAIL_DKIM_ENABLE', '0'); */;
+/* PHP:add_configuration_if_not_exists('PS_MAIL_DKIM_DOMAIN', ''); */;
+/* PHP:add_configuration_if_not_exists('PS_MAIL_DKIM_SELECTOR', ''); */;
+/* PHP:add_configuration_if_not_exists('PS_MAIL_DKIM_KEY', ''); */;
+/* PHP:add_configuration_if_not_exists('PS_WEBP_QUALITY', '80'); */;
+/* PHP:add_configuration_if_not_exists('PS_SECURITY_TOKEN', '1'); */;
 
 INSERT INTO `PREFIX_hook` (`id_hook`, `name`, `title`, `description`, `position`) VALUES
   (NULL, 'actionValidateOrderAfter', 'New Order', 'This hook is called after validating an order by core', '1'),
@@ -173,20 +171,37 @@ INSERT INTO `PREFIX_hook` (`id_hook`, `name`, `title`, `description`, `position`
   (NULL, 'actionProductGridPresenterModifier', 'Modify product grid template data', 'This hook allows to modify data which is about to be used in template for product grid', '1'),
   (NULL, 'actionSecuritySessionEmployeeGridPresenterModifier', 'Modify security session employee grid template data', 'This hook allows to modify data which is about to be used in template for security session employee grid', '1'),
   (NULL, 'actionSecuritySessionCustomerGridPresenterModifier', 'Modify security session customer grid template data', 'This hook allows to modify data which is about to be used in template for security session customer grid', '1'),
-  (NULL, 'actionStateGridPresenterModifier', 'Modify state grid template data', 'This hook allows to modify data which is about to be used in template for state grid', '1'),
-  (NULL, 'actionTitleGridPresenterModifier', 'Modify title grid template data', 'This hook allows to modify data which is about to be used in template for title grid', '1')
+  (NULL, 'actionAfterCreateCartSummaryFormHandler','Modify back office order data after creating it','This hook allows to modify order created from back office data after it is created', '1'),
+  (NULL, 'actionBeforeCreateCartSummaryFormHandler','Modify back office order data before creating it','This hook allows to modify order created from back office data before it is created', '1'),
+  (NULL, 'actionBeforeDisableMobileModule','Before a module is disabled for mobile','This hook is called just before a module is disabled for mobile', '1'),
+  (NULL, 'actionBeforeDisableModule','Before a module is disabled','This hook is called just before a module is disabled', '1'),
+  (NULL, 'actionBeforeEnableMobileModule','Before a module is enabled for mobile','This hook is called just before a module is enabled for mobile', '1'),
+  (NULL, 'actionBeforeEnableModule','Before a module is enabled','This hook is called just before a module is enabled', '1'),
+  (NULL, 'actionBeforeInstallModule','Before a module is installed','This hook is called just before a module is installed', '1'),
+  (NULL, 'actionBeforePostInstallModule','Before method `postInstall()` is called','This hook is called juste before a module execute its `postInstall()` method', '1'),
+  (NULL, 'actionBeforeResetModule','Before a module is reset','This hook is called just before a module is reset', '1'),
+  (NULL, 'actionBeforeUninstallModule','Before a module is uninstalled','This hook is called just before a module is uninstalled', '1'),
+  (NULL, 'actionBeforeUpgradeModule','Before a module is upgraded','This hook is called just before a module is upgraded', '1'),
+  (NULL, 'actionFilterDeliveryOptionList','Modify delivery option list result','This hook allows you to modify delivery option list', '1'),
+  (NULL, 'actionGetAdminToolbarButtons','Allows to add buttons in any toolbar in the back office','This hook allows you to define descriptions of buttons to add in any toolbar of the back office', '1'),
+  (NULL, 'actionListModules','Add modules to the module manager list','This hook allows you to add modules to the list of modules displayed in the module manager page', '1'),
+  (NULL, 'actionValidateOrderAfter','After validating an order','This hook is called after validating an order by core', '1'),
+  (NULL, 'displayBackOfficeEmployeeMenu','Administration Employee menu','This hook is displayed in the employee menu', '1'),
+  (NULL, 'displayEmptyModuleCategoryExtraMessage','Extra message to display for an empty modules category','This hook allows to add an extra message to display in the Module manager page when a category does not have any module', '1'),
+  (NULL, 'actionStateGridPresenterModifier','Modify state grid template data','This hook allows to modify data which is about to be used in template for state grid', '1'),
+  (NULL, 'actionTitleGridPresenterModifier','Modify title grid template data','This hook allows to modify data which is about to be used in template for title grid', '1')
 ON DUPLICATE KEY UPDATE `title` = VALUES(`title`), `description` = VALUES(`description`);
 
-ALTER TABLE `PREFIX_employee_session` ADD `date_upd` DATETIME NOT NULL AFTER `token`;
-ALTER TABLE `PREFIX_employee_session` ADD `date_add` DATETIME NOT NULL AFTER `date_upd`;
+/* PHP:add_column('employee_session', 'date_upd', 'DATETIME NOT NULL AFTER `token`'); */;
+/* PHP:add_column('employee_session', 'date_add', 'DATETIME NOT NULL AFTER `date_upd`'); */;
 UPDATE `PREFIX_employee_session` SET `date_add` = NOW(), `date_upd` = NOW();
-ALTER TABLE `PREFIX_customer_session` ADD `date_upd` DATETIME NOT NULL AFTER `token`;
-ALTER TABLE `PREFIX_customer_session` ADD `date_add` DATETIME NOT NULL AFTER `date_upd`;
+/* PHP:add_column('customer_session', 'date_upd', 'DATETIME NOT NULL AFTER `token`'); */;
+/* PHP:add_column('customer_session', 'date_add', 'DATETIME NOT NULL AFTER `date_upd`'); */;
 UPDATE `PREFIX_customer_session` SET `date_add` = NOW(), `date_upd` = NOW();
 
-ALTER TABLE `PREFIX_carrier` DROP COLUMN `id_tax_rules_group`;
+/* PHP:drop_column_if_exists('carrier', 'id_tax_rules_group'); */;
 
-ALTER TABLE `PREFIX_category_lang` ADD `additional_description` text AFTER `description`;
+/* PHP:add_column('category_lang', 'additional_description', 'text AFTER `description`'); */;
 
 ALTER TABLE `PREFIX_product` MODIFY COLUMN `redirect_type` ENUM(
     '404', '410', '301-product', '302-product', '301-category', '302-category'
@@ -203,15 +218,15 @@ ALTER TABLE `PREFIX_webservice_permission` MODIFY COLUMN `method` ENUM(
     'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD'
 ) NOT NULL;
 
-ALTER TABLE `PREFIX_product` ADD `unit_price` decimal(20, 6) NOT NULL DEFAULT '0.000000' AFTER `unity`;
-ALTER TABLE `PREFIX_product_shop` ADD `unit_price` decimal(20, 6) NOT NULL DEFAULT '0.000000' AFTER `unity`;
+/* PHP:add_column('product', 'unit_price', 'decimal(20, 6) NOT NULL DEFAULT \'0.000000\' AFTER `unity`'); */;
+/* PHP:add_column('product_shop', 'unit_price', 'decimal(20, 6) NOT NULL DEFAULT \'0.000000\' AFTER `unity`'); */;
 
 UPDATE `PREFIX_product` SET `unit_price` = IF (`unit_price_ratio` != 0, `price` / `unit_price_ratio`, 0);
 UPDATE `PREFIX_product_shop` SET `unit_price` = IF (`unit_price_ratio` != 0, `price` / `unit_price_ratio`, 0);
 
+/* PHP:add_column('feature_flag', 'stability', 'VARCHAR(64) DEFAULT \'beta\' NOT NULL'); */;
 
-ALTER TABLE `PREFIX_feature_flag` ADD `stability` VARCHAR(64) DEFAULT 'beta' NOT NULL;
-UPDATE `PREFIX_feature_flag` SET `state` = '0', `stability` = 'stable', `label_wording` = 'New product page - Single store', `description_wording` = 'This page benefits from increased performance and includes new features such as a new combination management system.' WHERE `name` = 'product_page_V2';
+UPDATE `PREFIX_feature_flag` SET `state` = '0', `stability` = 'beta', `label_wording` = 'New product page - Single store', `description_wording` = 'This page benefits from increased performance and includes new features such as a new combination management system.' WHERE `name` = 'product_page_V2';
 
 INSERT INTO `PREFIX_feature_flag` (`name`, `state`, `label_wording`, `label_domain`, `description_wording`, `description_domain`, `stability`)
 VALUES ('product_page_v2_multi_shop', '0', 'New product page - Multi store', 'Admin.Advparameters.Feature', 'Access the new product page, even in a multistore context. This is a work in progress and some features are not available.', 'Admin.Advparameters.Help', 'beta');
@@ -223,11 +238,9 @@ UPDATE `PREFIX_tab` SET wording = 'New & Experimental Features' WHERE `class_nam
 UPDATE `PREFIX_quick_access` SET `link` = 'index.php/sell/orders' WHERE `link` = 'index.php?controller=AdminOrders';
 
 /* Insert new password policy configuration values */
-INSERT INTO `PREFIX_configuration` (`name`, `value`, `date_add`, `date_upd`) VALUES
-  ('PS_SECURITY_PASSWORD_POLICY_MAXIMUM_LENGTH', '72', NOW(), NOW()),
-  ('PS_SECURITY_PASSWORD_POLICY_MINIMUM_LENGTH', '8', NOW(), NOW()),
-  ('PS_SECURITY_PASSWORD_POLICY_MINIMUM_SCORE', '3', NOW(), NOW())
-;
+/* PHP:add_configuration_if_not_exists('PS_SECURITY_PASSWORD_POLICY_MAXIMUM_LENGTH', '72'); */;
+/* PHP:add_configuration_if_not_exists('PS_SECURITY_PASSWORD_POLICY_MINIMUM_LENGTH', '8'); */;
+/* PHP:add_configuration_if_not_exists('PS_SECURITY_PASSWORD_POLICY_MINIMUM_SCORE', '3'); */;
 
 UPDATE `PREFIX_carrier` SET `name` = 'Click and collect' WHERE `name` = '0';
 
@@ -238,6 +251,9 @@ UPDATE `PREFIX_carrier` SET `name` = 'Click and collect' WHERE `name` = '0';
 /* PHP:drop_column_if_exists('product_attribute', 'quantity'); */;
 /* PHP:drop_column_if_exists('orders', 'shipping_number'); */;
 
-ALTER TABLE `PREFIX_tab` DROP hide_host_mode;
+/* PHP:drop_column_if_exists('tab', 'hide_host_mode'); */;
+
 ALTER TABLE `PREFIX_feature_flag` CHANGE label_wording label_wording VARCHAR(512) DEFAULT '' NOT NULL;
 ALTER TABLE `PREFIX_feature_flag` CHANGE description_wording description_wording VARCHAR(512) DEFAULT '' NOT NULL;
+
+UPDATE `PREFIX_state` SET `iso_code` = 'AGU' WHERE `name` = 'Aguascalientes';

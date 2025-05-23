@@ -17,12 +17,10 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
-
-/**
- * Init new configuration values
- */
-function ps_1760_update_configuration()
+function install_ps_apiresources()
 {
-    Configuration::updateValue('PS_MAIL_THEME', 'modern');
-    Configuration::updateValue('PS_CATALOG_MODE_WITH_PRICES', 0);
+    if (class_exists('Ps_Apiresources')) {
+        $module = new Ps_Apiresources();
+        $module->install();
+    }
 }

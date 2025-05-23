@@ -5,31 +5,33 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Open Software License (OSL 3.0)
+ * This source file is subject to the Academic Free License version 3.0
  * that is bundled with this package in the file LICENSE.md.
  * It is also available through the world-wide-web at this URL:
- * https://opensource.org/licenses/OSL-3.0
+ * https://opensource.org/licenses/AFL-3.0
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@prestashop.com so we can send you a copy immediately.
  *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade PrestaShop to newer
- * versions in the future. If you wish to customize PrestaShop for your
- * needs please refer to https://devdocs.prestashop.com/ for more information.
- *
  * @author    PrestaShop SA and Contributors <contact@prestashop.com>
  * @copyright Since 2007 PrestaShop SA and Contributors
- * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
+ */
+
+use PrestaShop\Module\AutoUpgrade\Database\DbWrapper;
+
+/**
+ * @return bool
+ *
+ * @throws \PrestaShop\Module\AutoUpgrade\Exceptions\UpdateDatabaseException
  */
 function execute_sql_if_table_exists($table, $sqlQuery)
 {
-    if (empty(Db::getInstance()->executeS('SHOW TABLES LIKE "' . _DB_PREFIX_ . $table . '"'))) {
+    if (empty(DbWrapper::executeS('SHOW TABLES LIKE "' . _DB_PREFIX_ . $table . '"'))) {
         return true;
     }
 
     $sqlQuery = str_replace('PREFIX', _DB_PREFIX_, $sqlQuery);
 
-    return Db::getInstance()->execute($sqlQuery);
+    return DbWrapper::execute($sqlQuery);
 }

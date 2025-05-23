@@ -5,28 +5,28 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Open Software License (OSL 3.0)
+ * This source file is subject to the Academic Free License version 3.0
  * that is bundled with this package in the file LICENSE.md.
  * It is also available through the world-wide-web at this URL:
- * https://opensource.org/licenses/OSL-3.0
+ * https://opensource.org/licenses/AFL-3.0
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@prestashop.com so we can send you a copy immediately.
  *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade PrestaShop to newer
- * versions in the future. If you wish to customize PrestaShop for your
- * needs please refer to https://devdocs.prestashop.com/ for more information.
- *
  * @author    PrestaShop SA and Contributors <contact@prestashop.com>
  * @copyright Since 2007 PrestaShop SA and Contributors
- * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
+use PrestaShop\Module\AutoUpgrade\Database\DbWrapper;
 use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
 use PrestaShop\PrestaShop\Core\Localization\CLDR\LocaleRepository;
 
+/**
+ * @return void
+ *
+ * @throws \PrestaShop\Module\AutoUpgrade\Exceptions\UpdateDatabaseException
+ */
 function ps_1760_copy_data_from_currency_to_currency_lang()
 {
     // Force cache reset of languages (load locale column)
@@ -34,7 +34,7 @@ function ps_1760_copy_data_from_currency_to_currency_lang()
 
     $languages = Language::getLanguages();
     foreach ($languages as $language) {
-        Db::getInstance()->execute(
+        DbWrapper::execute(
             'INSERT INTO `' . _DB_PREFIX_ . 'currency_lang` (`id_currency`, `id_lang`, `name`)
             SELECT `id_currency`, ' . (int) $language['id_lang'] . ' as id_lang , `name`
             FROM `' . _DB_PREFIX_ . 'currency`
@@ -60,6 +60,9 @@ function ps_1760_copy_data_from_currency_to_currency_lang()
     ObjectModel::enableCache();
 }
 
+/**
+ * @throws \PrestaShop\Module\AutoUpgrade\Exceptions\UpdateDatabaseException
+ */
 function refreshLocalizedCurrencyData(Currency $currency, array $languages, LocaleRepository $localeRepoCLDR)
 {
     $language = new Language($languages[0]['id_lang']);
@@ -71,7 +74,7 @@ function refreshLocalizedCurrencyData(Currency $currency, array $languages, Loca
             'numeric_iso_code' => $cldrCurrency->getNumericIsoCode(),
             'precision' => $cldrCurrency->getDecimalDigits(),
         ];
-        Db::getInstance()->update('currency', $fields, 'id_currency = ' . (int) $currency->id);
+        DbWrapper::update('currency', $fields, 'id_currency = ' . (int) $currency->id);
     }
 
     foreach ($languages as $languageData) {
@@ -97,6 +100,6 @@ function refreshLocalizedCurrencyData(Currency $currency, array $languages, Loca
 
         $where = 'id_currency = ' . (int) $currency->id
             . ' AND id_lang = ' . (int) $language->id;
-        Db::getInstance()->update('currency_lang', $fields, $where);
+        DbWrapper::update('currency_lang', $fields, $where);
     }
 }

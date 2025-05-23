@@ -5,35 +5,31 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Open Software License (OSL 3.0)
+ * This source file is subject to the Academic Free License version 3.0
  * that is bundled with this package in the file LICENSE.md.
  * It is also available through the world-wide-web at this URL:
- * https://opensource.org/licenses/OSL-3.0
+ * https://opensource.org/licenses/AFL-3.0
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@prestashop.com so we can send you a copy immediately.
  *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade PrestaShop to newer
- * versions in the future. If you wish to customize PrestaShop for your
- * needs please refer to https://devdocs.prestashop.com/ for more information.
- *
  * @author    PrestaShop SA and Contributors <contact@prestashop.com>
  * @copyright Since 2007 PrestaShop SA and Contributors
- * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
+
+use PrestaShop\Module\AutoUpgrade\Database\DbWrapper;
 
 /**
  * This function aims to update the null values of several columns, to default values,
  * in order to avoid unexpected behavior on data that does not take null values into account
  *
+ * @throws \PrestaShop\Module\AutoUpgrade\Exceptions\UpdateDatabaseException
+ *
  * @internal
  */
 function update_null_values()
 {
-    $db = Db::getInstance();
-
     $updates = [
         ['address', 'address2', ''],
         ['address', 'company', ''],
@@ -229,12 +225,12 @@ function update_null_values()
         list($tabName, $columnName, $newValue) = $update;
 
         // Check if the table exists
-        if (empty($db->executeS('SHOW TABLES LIKE "' . _DB_PREFIX_ . $tabName . '"'))) {
+        if (empty(DbWrapper::executeS('SHOW TABLES LIKE "' . _DB_PREFIX_ . $tabName . '"'))) {
             continue;
         }
 
         // Check if the column exists
-        if (empty($db->executeS('SHOW COLUMNS FROM `' . _DB_PREFIX_ . $tabName . "` WHERE Field = '" . $columnName . "'"))) {
+        if (empty(DbWrapper::executeS('SHOW COLUMNS FROM `' . _DB_PREFIX_ . $tabName . "` WHERE Field = '" . $columnName . "'"))) {
             continue;
         }
 
@@ -242,6 +238,6 @@ function update_null_values()
 
         // Update existing null values
         $updateQuery = 'UPDATE `' . _DB_PREFIX_ . $tabName . '` SET `' . $columnName . '`=' . $newValue . ' WHERE `' . $columnName . '` IS NULL';
-        $db->execute($updateQuery);
+        DbWrapper::execute($updateQuery);
     }
 }

@@ -18,11 +18,22 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
+use PrestaShop\Module\AutoUpgrade\Database\DbWrapper;
+
 /**
- * Init new configuration values
+ * @return void
+ *
+ * @throws \PrestaShop\Module\AutoUpgrade\Exceptions\UpdateDatabaseException
  */
-function ps_1760_update_configuration()
+function ps_900_set_url_lang_prefix()
 {
-    Configuration::updateValue('PS_MAIL_THEME', 'modern');
-    Configuration::updateValue('PS_CATALOG_MODE_WITH_PRICES', 0);
+    $numberOfActiveLanguages = (int) DbWrapper::getValue(
+        'SELECT COUNT(*) AS lang_count FROM `' . _DB_PREFIX_ . 'lang` WHERE `active` = 1'
+    );
+
+    if ($numberOfActiveLanguages > 1) {
+        Configuration::updateValue('PS_DEFAULT_LANGUAGE_URL_PREFIX', 1);
+    } else {
+        Configuration::updateValue('PS_DEFAULT_LANGUAGE_URL_PREFIX', 0);
+    }
 }
